@@ -2,10 +2,12 @@ import com.android.build.api.dsl.ApplicationExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.configure
+import reza.droid.convention.ExtensionType
+import reza.droid.convention.configureBuildTypes
 import reza.droid.convention.configureKotlinAndroid
 import reza.droid.convention.libs
 
-class AndroidApplicationConventionPlugin: Plugin<Project> {
+class AndroidApplicationConventionPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         target.run {
             pluginManager.run {
@@ -23,7 +25,13 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 }
 
                 configureKotlinAndroid(this)
+
+                configureBuildTypes(
+                    commonExtension = this,
+                    extensionType = ExtensionType.Application
+                )
             }
+
         }
     }
 }
