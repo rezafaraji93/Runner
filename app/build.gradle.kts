@@ -1,19 +1,14 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.mapsplatform.secrets.plugin)
+    alias(libs.plugins.runner.android.application)
 }
 
 android {
     namespace = "reza.droid.runner"
-    compileSdk = 34
 
     defaultConfig {
-        applicationId = "reza.droid.runner"
-        minSdk = 24
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -28,13 +23,6 @@ android {
                 "proguard-rules.pro"
             )
         }
-    }
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
-    kotlinOptions {
-        jvmTarget = "1.8"
     }
     buildFeatures {
         compose = true
