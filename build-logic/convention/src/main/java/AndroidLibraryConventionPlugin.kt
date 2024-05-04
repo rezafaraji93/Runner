@@ -31,10 +31,8 @@ class AndroidLibraryConventionPlugin: Plugin<Project> {
             }
             dependencies {
                 "testImplementation"(kotlin("test"))
-                "androidTestImplementation"("androidx.test:core:1.5.0")
-                "androidTestImplementation"("androidx.test:core-ktx:1.5.0")
-                "androidTestImplementation"("androidx.test.ext:junit:1.1.5")
-                "androidTestImplementation"("androidx.test.ext:junit-ktx:1.1.5")
+                "androidTestImplementation"(libs.findLibrary("androidx.test").get())
+                "androidTestImplementation"(libs.findLibrary("androidx.junit").get())
 
             }
         }
