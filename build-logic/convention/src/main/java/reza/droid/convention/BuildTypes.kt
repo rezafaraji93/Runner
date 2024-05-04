@@ -10,14 +10,14 @@ import org.gradle.kotlin.dsl.configure
 import reza.droid.convention.ExtensionType.*
 
 internal fun Project.configureBuildTypes(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     extensionType: ExtensionType
 ) {
     commonExtension.run {
         buildFeatures {
             buildConfig = true
         }
-        val apiKey = gradleLocalProperties(rootDir).getProperty("API_KEY")
+        val apiKey = gradleLocalProperties(rootDir, rootProject.providers).getProperty("API_KEY")
         when(extensionType) {
             Application -> {
                 extensions.configure<ApplicationExtension> {
@@ -59,7 +59,7 @@ private fun BuildType.configureDebugBuildType(
     buildConfigField("String", "BASE_URL", "\"https://runique.pl-coding.com:8080\"")
 }
 private fun BuildType.configureReleaseBuildType(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     apiKey: String
 ) {
     buildConfigField("String", "API_KEY", "\"$apiKey\"")
