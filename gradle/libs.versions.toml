@@ -127,6 +127,7 @@ runner-android-library-compose = { id = "runner.android.library.compose", versio
 runner-android-feature-ui = { id = "runner.android.feature.ui", version = "unspecified" }
 runner-android-room = { id = "runner.android.room", version = "unspecified" }
 runner-jvm-library = { id = "runner.jvm.library", version = "unspecified" }
+runner-jvm-ktor = { id = "runner.jvm.ktor", version = "unspecified" }
 
 [bundles]
 compose = [
@@ -146,3 +147,12 @@ compose-debug = [
 
 koin = ["koin-core", "koin-android", "koin-android-workmanager"]
 koin-compose = ["koin-core", "koin-android", "koin-android-workmanager", "koin-androidx-compose"]
+
+ktor = [
+    "ktor-client-auth",
+    "ktor-client-cio",
+    "ktor-client-content-negotiation",
+    "ktor-client-core",
+    "ktor-client-logging",
+    "ktor-serialization-kotlinx-json"
+]
