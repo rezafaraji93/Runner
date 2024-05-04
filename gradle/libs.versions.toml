@@ -125,6 +125,7 @@ runner-android-application-compose = { id = "runner.android.application.compose"
 runner-android-library = { id = "runner.android.library", version = "unspecified" }
 runner-android-library-compose = { id = "runner.android.library.compose", version = "unspecified" }
 runner-android-feature-ui = { id = "runner.android.feature.ui", version = "unspecified" }
+runner-android-room = { id = "runner.android.room", version = "unspecified" }
 
 [bundles]
 compose = [

@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.runner.android.library)
+    alias(libs.plugins.runner.android.room)
 
 }
 
