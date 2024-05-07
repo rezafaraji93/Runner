@@ -3,7 +3,7 @@ package reza.droid.runner
 import android.app.Application
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.dsl.koinApplication
+import org.koin.core.context.startKoin
 import reza.droid.auth.data.di.authDataModule
 import reza.droid.auth.presentation.di.authViewModelModule
 import reza.droid.runner.di.appModule
@@ -16,7 +16,7 @@ class RunnerApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
-        koinApplication {
+        startKoin {
             androidLogger()
             androidContext(this@RunnerApp)
             modules(
