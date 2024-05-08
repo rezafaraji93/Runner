@@ -46,5 +46,8 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
                 navController.navigate("login")
             })
         }
+        composable("login") {
+
+        }
     }
 }

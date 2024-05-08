@@ -9,16 +9,29 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
+import reza.droid.auth.domain.AuthRepository
 import reza.droid.auth.domain.UserDataValidator
+import reza.droid.auth.presentation.R
+import reza.droid.core.domain.util.DataError
+import reza.droid.core.domain.util.Result
+import reza.droid.core.presentation.ui.UiText
+import reza.droid.core.presentation.ui.asUiText
 
 class RegisterViewModel(
-    private val userDataValidator: UserDataValidator
-): ViewModel() {
+    private val userDataValidator: UserDataValidator,
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     var state by mutableStateOf(RegisterState())
         private set
+
+    private val eventChannel = Channel<RegisterEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     init {
         state.email.textAsFlow()
@@ -34,7 +47,8 @@ class RegisterViewModel(
 
         state.password.textAsFlow()
             .onEach { password ->
-                val passwordValidationState = userDataValidator.validatePassword(password.toString())
+                val passwordValidationState =
+                    userDataValidator.validatePassword(password.toString())
                 state = state.copy(
                     passwordValidationState = passwordValidationState,
                     canRegister = state.isEmailValid && passwordValidationState.isValidPassword
@@ -45,6 +59,43 @@ class RegisterViewModel(
     }
 
     fun onAction(action: RegisterAction) {
+        when (action) {
+            RegisterAction.OnLoginClick -> TODO()
+            RegisterAction.OnRegisterClick -> register()
+            RegisterAction.OnTogglePasswordVisibilityClick -> state = state.copy(isPasswordVisible = !state.isPasswordVisible)
+        }
+    }
 
+    private fun register() {
+        viewModelScope.launch {
+            state = state.copy(isRegistering = true)
+            val result = authRepository.register(
+                email = state.email.text.toString().trim(),
+                password = state.password.text.toString()
+            )
+            state = state.copy(isRegistering = false)
+            when (result) {
+                is Result.Error -> {
+                    if (result.error == DataError.Network.CONFLICT) {
+                        eventChannel.send(
+                            RegisterEvent.Error(
+                                error = UiText.StringResource(
+                                    R.string.error_email_exists
+                                )
+                            )
+                        )
+                    } else
+                        eventChannel.send(
+                            RegisterEvent.Error(
+                                error = result.error.asUiText()
+                            )
+                        )
+                }
+
+                is Result.Success -> {
+                    eventChannel.send(RegisterEvent.RegistrationSuccess)
+                }
+            }
+        }
     }
 }

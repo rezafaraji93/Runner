@@ -6,6 +6,7 @@ import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import reza.droid.auth.data.di.authDataModule
 import reza.droid.auth.presentation.di.authViewModelModule
+import reza.droid.core.data.di.coreDataModule
 import reza.droid.runner.di.appModule
 import timber.log.Timber
 
@@ -22,7 +23,8 @@ class RunnerApp : Application() {
             modules(
                 appModule,
                 authDataModule,
-                authViewModelModule
+                authViewModelModule,
+                coreDataModule
             )
         }
     }
