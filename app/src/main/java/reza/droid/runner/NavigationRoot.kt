@@ -12,13 +12,14 @@ import reza.droid.auth.presentation.register.RegisterScreenRoot
 
 @Composable
 fun NavigationRoot(
-    navController: NavHostController
+    navController: NavHostController, isLoggedIn: Boolean
 ) {
 
     NavHost(
-        navController = navController, startDestination = "auth"
+        navController = navController, startDestination = if (isLoggedIn) "run" else "auth"
     ) {
         authGraph(navController)
+        runGraph(navController)
     }
 
 }
@@ -48,24 +49,31 @@ private fun NavGraphBuilder.authGraph(navController: NavHostController) {
             })
         }
         composable("login") {
-            LoginScreenRoot(
-                onLoginSuccess = {
-                    navController.navigate("run") {
-                        popUpTo("auth") {
-                            inclusive = true
-                        }
-                    }
-                },
-                onSignUpClick = {
-                    navController.navigate("register") {
-                        popUpTo("login") {
-                            inclusive = true
-                            saveState = true
-                        }
-                        restoreState = true
+            LoginScreenRoot(onLoginSuccess = {
+                navController.navigate("run") {
+                    popUpTo("auth") {
+                        inclusive = true
                     }
                 }
-            )
+            }, onSignUpClick = {
+                navController.navigate("register") {
+                    popUpTo("login") {
+                        inclusive = true
+                        saveState = true
+                    }
+                    restoreState = true
+                }
+            })
+        }
+    }
+}
+
+private fun NavGraphBuilder.runGraph(navController: NavHostController) {
+    navigation(
+        startDestination = "run_overview", route = "run"
+    ) {
+        composable("run_overview") {
+
         }
     }
 }
