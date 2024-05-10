@@ -9,7 +9,7 @@ import reza.droid.core.domain.SessionStorage
 
 val coreDataModule = module {
     single {
-        HttpClientFactory().build()
+        HttpClientFactory(get()).build()
     }
     singleOf(::EncryptedSessionStorage).bind<SessionStorage>()
 }

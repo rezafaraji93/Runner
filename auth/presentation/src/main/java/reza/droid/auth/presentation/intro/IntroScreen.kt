@@ -59,7 +59,7 @@ fun IntroScreen(
                 .padding(bottom = 48.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.welcome_to_runique),
+                text = stringResource(id = R.string.welcome_to_runner),
                 color = MaterialTheme.colorScheme.onBackground,
                 fontSize = 20.sp
             )
@@ -106,7 +106,7 @@ private fun RunnerLogoVertical(
         )
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            text = stringResource(id = R.string.runique),
+            text = stringResource(id = R.string.runner),
             fontSize = 24.sp,
             fontWeight = FontWeight.Medium,
             color = MaterialTheme.colorScheme.onBackground
