@@ -9,6 +9,7 @@ import androidx.navigation.compose.navigation
 import reza.droid.auth.presentation.intro.IntroScreenRoot
 import reza.droid.auth.presentation.login.LoginScreenRoot
 import reza.droid.auth.presentation.register.RegisterScreenRoot
+import reza.droid.run.presentation.active_run.ActiveRunScreenRoot
 import reza.droid.run.presentation.run_overview.RunOverviewScreenRoot
 
 @Composable
@@ -74,7 +75,14 @@ private fun NavGraphBuilder.runGraph(navController: NavHostController) {
         startDestination = "run_overview", route = "run"
     ) {
         composable("run_overview") {
-            RunOverviewScreenRoot()
+            RunOverviewScreenRoot(
+                onStartRunClick = {
+                    navController.navigate("active_run")
+                }
+            )
+        }
+        composable("active_run") {
+            ActiveRunScreenRoot()
         }
     }
 }

@@ -20,7 +20,7 @@ import reza.droid.core.presentation.designsystem.RunIcon
 import reza.droid.core.presentation.designsystem.RunnerTheme
 
 @Composable
-fun RuniqueFloatingActionButton(
+fun RunnerFloatingActionButton(
     icon: ImageVector,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -55,9 +55,9 @@ fun RuniqueFloatingActionButton(
 
 @Preview
 @Composable
-private fun RuniqueFloatingButtonPreview() {
+private fun RunnerFloatingButtonPreview() {
     RunnerTheme {
-        RuniqueFloatingActionButton(
+        RunnerFloatingActionButton(
             icon = RunIcon,
             onClick = {  }
         )
