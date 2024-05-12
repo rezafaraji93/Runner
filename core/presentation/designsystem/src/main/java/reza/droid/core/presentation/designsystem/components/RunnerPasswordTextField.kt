@@ -155,7 +155,7 @@ fun RunnerPasswordTextField(
 
 @Preview
 @Composable
-private fun RuniqueTextFieldPreview() {
+private fun RunnerTextFieldPreview() {
     RunnerTheme {
         RunnerPasswordTextField(
             state = rememberTextFieldState(),

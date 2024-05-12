@@ -2,7 +2,7 @@
 <resources>
     <string name="runner">Runner</string>
     <string name="welcome_to_runner">Welcome to Runner!</string>
-    <string name="runique_description">Track your runs, set goals and achieve fitness milestones with our intuitive app.</string>
+    <string name="runner_description">Track your runs, set goals and achieve fitness milestones with our intuitive app.</string>
     <string name="sign_up">Sign up</string>
     <string name="sign_in">Sign in</string>
     <string name="create_account">Create Account</string>

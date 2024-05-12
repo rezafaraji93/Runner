@@ -65,7 +65,7 @@ fun IntroScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
             Text(
-                text = stringResource(id = R.string.runique_description),
+                text = stringResource(id = R.string.runner_description),
                 style = MaterialTheme.typography.bodySmall
             )
             Spacer(modifier = Modifier.height(32.dp))

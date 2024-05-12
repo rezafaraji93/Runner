@@ -170,7 +170,7 @@ fun RunnerTextField(
 
 @Preview
 @Composable
-private fun RuniqueTextFieldPreview() {
+private fun RunnerTextFieldPreview() {
     RunnerTheme {
         RunnerTextField(
             state = rememberTextFieldState(),

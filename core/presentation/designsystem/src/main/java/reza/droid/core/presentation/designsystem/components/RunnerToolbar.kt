@@ -122,11 +122,11 @@ fun RunnerToolbar(
 
 @Preview
 @Composable
-private fun RuniqueToolbarPreview() {
+private fun RunnerToolbarPreview() {
     RunnerTheme {
         RunnerToolbar(
             showBackButton = false,
-            title = "Runique",
+            title = "Runner",
             modifier = Modifier.fillMaxWidth(),
             startContent = {
                 Icon(

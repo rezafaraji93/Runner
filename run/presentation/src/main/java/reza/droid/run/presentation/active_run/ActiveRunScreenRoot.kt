@@ -2,6 +2,13 @@
 
 package reza.droid.run.presentation.active_run
 
+import android.Manifest
+import android.content.Context
+import android.os.Build
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +17,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,6 +32,10 @@ import reza.droid.core.presentation.designsystem.components.RunnerScaffold
 import reza.droid.core.presentation.designsystem.components.RunnerToolbar
 import reza.droid.run.presentation.R
 import reza.droid.run.presentation.active_run.component.RunDataCard
+import reza.droid.run.presentation.util.hasLocationPermission
+import reza.droid.run.presentation.util.hasNotificationPermission
+import reza.droid.run.presentation.util.shouldShowLocationPermissionRationale
+import reza.droid.run.presentation.util.shouldShowNotificationPermissionRationale
 
 @Composable
 fun ActiveRunScreenRoot(
@@ -37,6 +50,58 @@ fun ActiveRunScreenRoot(
 private fun ActiveRunScreen(
     state: ActiveRunState, onAction: (ActiveRunAction) -> Unit
 ) {
+
+    val context = LocalContext.current
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { perms ->
+        val hasCourseLocationPermission = perms[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+        val hasFineLocationPermission = perms[Manifest.permission.ACCESS_FINE_LOCATION] == true
+        val hasNotificationPermission = if (Build.VERSION.SDK_INT >= 33) {
+            perms[Manifest.permission.POST_NOTIFICATIONS] == true
+        } else true
+
+        val activity = context as ComponentActivity
+        val showLocationRationale = activity.shouldShowLocationPermissionRationale()
+        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
+
+        onAction(
+            ActiveRunAction.SubmitLocationPermissionInfo(
+                acceptedLocationPermission = hasCourseLocationPermission && hasFineLocationPermission,
+                showLocationRationale = showLocationRationale
+            )
+        )
+        onAction(
+            ActiveRunAction.SubmitNotificationPermissionInfo(
+                acceptedNotificationPermission = hasNotificationPermission,
+                showNotificationPermissionRationale = showNotificationRationale
+            )
+        )
+    }
+
+    LaunchedEffect(key1 = true) {
+        val activity = context as ComponentActivity
+        val showLocationRationale = activity.shouldShowLocationPermissionRationale()
+        val showNotificationRationale = activity.shouldShowNotificationPermissionRationale()
+
+        onAction(
+            ActiveRunAction.SubmitLocationPermissionInfo(
+                acceptedLocationPermission = context.hasLocationPermission(),
+                showLocationRationale = showLocationRationale
+            )
+        )
+        onAction(
+            ActiveRunAction.SubmitNotificationPermissionInfo(
+                acceptedNotificationPermission = context.hasNotificationPermission(),
+                showNotificationPermissionRationale = showNotificationRationale
+            )
+        )
+
+        if(!showLocationRationale && !showNotificationRationale) {
+            permissionLauncher.requestRunnerPermissions(context)
+        }
+    }
+
     RunnerScaffold(withGradient = false, topAppBar = {
         RunnerToolbar(
             showBackButton = true,
@@ -76,6 +141,30 @@ private fun ActiveRunScreen(
         }
     }
 }
+
+private fun ActivityResultLauncher<Array<String>>.requestRunnerPermissions(
+    context: Context
+) {
+    val hasLocationPermission = context.hasLocationPermission()
+    val hasNotificationPermission = context.hasNotificationPermission()
+
+    val locationPermissions = arrayOf(
+        Manifest.permission.ACCESS_COARSE_LOCATION,
+        Manifest.permission.ACCESS_FINE_LOCATION,
+    )
+    val notificationPermission = if(Build.VERSION.SDK_INT >= 33) {
+        arrayOf(Manifest.permission.POST_NOTIFICATIONS)
+    } else arrayOf()
+
+    when {
+        !hasLocationPermission && !hasNotificationPermission -> {
+            launch(locationPermissions + notificationPermission)
+        }
+        !hasLocationPermission -> launch(locationPermissions)
+        !hasNotificationPermission -> launch(notificationPermission)
+    }
+}
+
 
 @Preview
 @Composable
