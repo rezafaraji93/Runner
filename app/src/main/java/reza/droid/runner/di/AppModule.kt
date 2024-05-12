@@ -7,6 +7,7 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.dsl.module
 import reza.droid.runner.MainViewModel
+import reza.droid.runner.RunnerApp
 
 val appModule = module {
     single<SharedPreferences> {
@@ -17,6 +18,9 @@ val appModule = module {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+    }
+    single {
+        (androidApplication() as RunnerApp).applicationScope
     }
     viewModelOf(::MainViewModel)
 }
