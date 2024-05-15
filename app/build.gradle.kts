@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.runner.android.application.compose)
     alias(libs.plugins.runner.jvm.ktor)
@@ -8,10 +10,13 @@ android {
     namespace = "reza.droid.runner"
 
     defaultConfig {
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").reader())
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
+        manifestPlaceholders["MAPS_API_KEY"] = properties.getProperty("MAPS_API_KEY")
     }
     packaging {
         resources {

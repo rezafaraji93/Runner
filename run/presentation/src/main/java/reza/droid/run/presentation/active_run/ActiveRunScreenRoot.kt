@@ -32,6 +32,7 @@ import reza.droid.core.presentation.designsystem.components.RunnerScaffold
 import reza.droid.core.presentation.designsystem.components.RunnerToolbar
 import reza.droid.run.presentation.R
 import reza.droid.run.presentation.active_run.component.RunDataCard
+import reza.droid.run.presentation.active_run.maps.TrackerMap
 import reza.droid.run.presentation.util.hasLocationPermission
 import reza.droid.run.presentation.util.hasNotificationPermission
 import reza.droid.run.presentation.util.shouldShowLocationPermissionRationale
@@ -130,6 +131,12 @@ private fun ActiveRunScreen(
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.surface)
         ) {
+            TrackerMap(
+                isRunFinished = state.isRunFinished,
+                currentLocation = state.currentLocation,
+                locations = state.runData.locations,
+                onSnapshot = {}
+            )
             RunDataCard(
                 elapsedTime = state.elapsedTime,
                 runData = state.runData,
