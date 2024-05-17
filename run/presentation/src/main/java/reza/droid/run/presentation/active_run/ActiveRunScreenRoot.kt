@@ -27,7 +27,10 @@ import org.koin.androidx.compose.koinViewModel
 import reza.droid.core.presentation.designsystem.RunnerTheme
 import reza.droid.core.presentation.designsystem.StartIcon
 import reza.droid.core.presentation.designsystem.StopIcon
+import reza.droid.core.presentation.designsystem.components.RunnerActionButton
+import reza.droid.core.presentation.designsystem.components.RunnerDialog
 import reza.droid.core.presentation.designsystem.components.RunnerFloatingActionButton
+import reza.droid.core.presentation.designsystem.components.RunnerOutlinedActionButton
 import reza.droid.core.presentation.designsystem.components.RunnerScaffold
 import reza.droid.core.presentation.designsystem.components.RunnerToolbar
 import reza.droid.run.presentation.R
@@ -146,6 +149,65 @@ private fun ActiveRunScreen(
                     .fillMaxWidth()
             )
         }
+    }
+    if (!state.shouldTrack && state.hasStartedRunning) {
+        RunnerDialog(
+            title = stringResource(id = R.string.running_is_paused),
+            onDismiss = {
+                onAction(ActiveRunAction.OnResumeRunClick)
+            },
+            description = stringResource(id = R.string.resume_or_finish_run),
+            primaryButton = {
+                RunnerActionButton(
+                    text = stringResource(id = R.string.resume),
+                    isLoading = false,
+                    onClick = {
+                        onAction(ActiveRunAction.OnResumeRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            },
+            secondaryButton = {
+                RunnerOutlinedActionButton(
+                    text = stringResource(id = R.string.finish),
+                    isLoading = state.isSavingRun,
+                    onClick = {
+                        onAction(ActiveRunAction.OnFinishRunClick)
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+        )
+    }
+
+    if (state.showLocationRationale || state.showNotificationRationale) {
+        RunnerDialog(
+            title = stringResource(id = R.string.permission_required),
+            onDismiss = { /* Normal dismissing not allowed for permissions */ },
+            description = when {
+                state.showLocationRationale && state.showNotificationRationale -> {
+                    stringResource(id = R.string.location_notification_rationale)
+                }
+
+                state.showLocationRationale -> {
+                    stringResource(id = R.string.location_rationale)
+                }
+
+                else -> {
+                    stringResource(id = R.string.notification_rationale)
+                }
+            },
+            primaryButton = {
+                RunnerOutlinedActionButton(
+                    text = stringResource(id = R.string.okay),
+                    isLoading = false,
+                    onClick = {
+                        onAction(ActiveRunAction.DismissRationaleDialog)
+                        permissionLauncher.requestRunnerPermissions(context)
+                    },
+                )
+            }
+        )
     }
 }
 
