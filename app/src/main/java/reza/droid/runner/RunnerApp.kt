@@ -9,6 +9,7 @@ import org.koin.core.context.startKoin
 import reza.droid.auth.data.di.authDataModule
 import reza.droid.auth.presentation.di.authViewModelModule
 import reza.droid.core.data.di.coreDataModule
+import reza.droid.core.database.di.databaseModule
 import reza.droid.run.di.runPresentationModule
 import reza.droid.run.location.di.locationModule
 import reza.droid.runner.di.appModule
@@ -32,7 +33,8 @@ class RunnerApp : Application() {
                 authViewModelModule,
                 coreDataModule,
                 runPresentationModule,
-                locationModule
+                locationModule,
+                databaseModule
             )
         }
     }
