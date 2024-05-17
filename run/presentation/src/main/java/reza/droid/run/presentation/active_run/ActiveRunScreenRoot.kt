@@ -36,6 +36,7 @@ import reza.droid.core.presentation.designsystem.components.RunnerToolbar
 import reza.droid.run.presentation.R
 import reza.droid.run.presentation.active_run.component.RunDataCard
 import reza.droid.run.presentation.active_run.maps.TrackerMap
+import reza.droid.run.presentation.active_run.service.ActiveRunService
 import reza.droid.run.presentation.util.hasLocationPermission
 import reza.droid.run.presentation.util.hasNotificationPermission
 import reza.droid.run.presentation.util.shouldShowLocationPermissionRationale
@@ -43,16 +44,21 @@ import reza.droid.run.presentation.util.shouldShowNotificationPermissionRational
 
 @Composable
 fun ActiveRunScreenRoot(
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
     viewModel: ActiveRunViewModel = koinViewModel(),
 ) {
     ActiveRunScreen(
-        state = viewModel.state, onAction = viewModel::onAction
+        state = viewModel.state,
+        onServiceToggle = onServiceToggle,
+        onAction = viewModel::onAction
     )
 }
 
 @Composable
 private fun ActiveRunScreen(
-    state: ActiveRunState, onAction: (ActiveRunAction) -> Unit
+    state: ActiveRunState,
+    onServiceToggle: (isServiceRunning: Boolean) -> Unit,
+    onAction: (ActiveRunAction) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -103,6 +109,18 @@ private fun ActiveRunScreen(
 
         if(!showLocationRationale && !showNotificationRationale) {
             permissionLauncher.requestRunnerPermissions(context)
+        }
+    }
+
+    LaunchedEffect(key1 = state.isRunFinished) {
+        if(state.isRunFinished) {
+            onServiceToggle(false)
+        }
+    }
+
+    LaunchedEffect(key1 = state.shouldTrack) {
+        if(context.hasLocationPermission() && state.shouldTrack && !ActiveRunService.isServiceActive) {
+            onServiceToggle(true)
         }
     }
 
@@ -239,6 +257,10 @@ private fun ActivityResultLauncher<Array<String>>.requestRunnerPermissions(
 @Composable
 private fun ActiveRunScreenPreview() {
     RunnerTheme {
-        ActiveRunScreen(state = ActiveRunState(), onAction = {})
+        ActiveRunScreen(
+            state = ActiveRunState(),
+            onServiceToggle = {},
+            onAction = {}
+        )
     }
 }

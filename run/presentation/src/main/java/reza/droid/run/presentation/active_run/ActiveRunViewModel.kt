@@ -15,12 +15,17 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import reza.droid.run.domain.RunningTracker
+import reza.droid.run.presentation.active_run.service.ActiveRunService
 
 class ActiveRunViewModel(
     private val runningTracker: RunningTracker
 ): ViewModel() {
 
-    var state by mutableStateOf(ActiveRunState())
+
+    var state by mutableStateOf(ActiveRunState(
+        shouldTrack = ActiveRunService.isServiceActive && runningTracker.isTracking.value,
+        hasStartedRunning = ActiveRunService.isServiceActive
+    ))
         private set
 
     private val eventChannel = Channel<ActiveRunEvent>()
