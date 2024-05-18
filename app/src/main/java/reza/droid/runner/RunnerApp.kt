@@ -12,6 +12,7 @@ import reza.droid.core.data.di.coreDataModule
 import reza.droid.core.database.di.databaseModule
 import reza.droid.run.di.runPresentationModule
 import reza.droid.run.location.di.locationModule
+import reza.droid.run.network.di.networkModule
 import reza.droid.runner.di.appModule
 import timber.log.Timber
 
@@ -34,7 +35,8 @@ class RunnerApp : Application() {
                 coreDataModule,
                 runPresentationModule,
                 locationModule,
-                databaseModule
+                databaseModule,
+                networkModule
             )
         }
     }

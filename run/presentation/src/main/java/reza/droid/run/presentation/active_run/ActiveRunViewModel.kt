@@ -17,6 +17,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import reza.droid.core.domain.location.Location
 import reza.droid.core.domain.run.Run
+import reza.droid.core.domain.run.RunRepository
+import reza.droid.core.domain.util.Result
+import reza.droid.core.presentation.ui.asUiText
 import reza.droid.run.domain.LocationDataCalculator
 import reza.droid.run.domain.RunningTracker
 import reza.droid.run.presentation.active_run.service.ActiveRunService
@@ -24,7 +27,8 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 
 class ActiveRunViewModel(
-    private val runningTracker: RunningTracker
+    private val runningTracker: RunningTracker,
+    private val repository: RunRepository
 ): ViewModel() {
 
 
@@ -150,9 +154,13 @@ class ActiveRunViewModel(
                 mapPictureUrl = null
             )
 
-            // Save run in repository
-
             runningTracker.finishRun()
+
+            when(val result = repository.upsertRun(run, mapPictureBytes)) {
+                is Result.Error -> eventChannel.send(ActiveRunEvent.Error(result.error.asUiText()))
+                is Result.Success -> eventChannel.send(ActiveRunEvent.RunSaved)
+            }
+
             state = state.copy(isSavingRun = false)
         }
     }
