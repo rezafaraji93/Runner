@@ -5,11 +5,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
+import org.koin.androidx.workmanager.koin.workManagerFactory
 import org.koin.core.context.startKoin
 import reza.droid.auth.data.di.authDataModule
 import reza.droid.auth.presentation.di.authViewModelModule
 import reza.droid.core.data.di.coreDataModule
 import reza.droid.core.database.di.databaseModule
+import reza.droid.run.data.di.runDataModule
 import reza.droid.run.di.runPresentationModule
 import reza.droid.run.location.di.locationModule
 import reza.droid.run.network.di.networkModule
@@ -28,6 +30,7 @@ class RunnerApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@RunnerApp)
+            workManagerFactory()
             modules(
                 appModule,
                 authDataModule,
@@ -36,7 +39,8 @@ class RunnerApp : Application() {
                 runPresentationModule,
                 locationModule,
                 databaseModule,
-                networkModule
+                networkModule,
+                runDataModule
             )
         }
     }
