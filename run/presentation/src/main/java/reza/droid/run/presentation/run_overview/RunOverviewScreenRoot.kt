@@ -36,13 +36,16 @@ import reza.droid.run.presentation.run_overview.component.RunListItem
 @Composable
 fun RunOverviewScreenRoot(
     onStartRunClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     viewModel: RunOverviewViewModel = koinViewModel(),
 ) {
-    RunOverviewScreen(state = viewModel.state, onAction = {
-        if (it is RunOverviewAction.OnStartClick) {
-            onStartRunClick()
+    RunOverviewScreen(state = viewModel.state, onAction = { action ->
+        when(action) {
+            RunOverviewAction.OnLogoutClick -> onLogoutClick()
+            RunOverviewAction.OnStartClick -> onStartRunClick()
+            else -> Unit
         }
-        viewModel.onAction(it)
+        viewModel.onAction(action)
     })
 }
 
