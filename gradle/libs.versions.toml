@@ -123,6 +123,7 @@ mapsplatform-secrets-plugin = { id = "com.google.android.libraries.mapsplatform.
 runner-android-application = { id = "runner.android.application", version = "unspecified" }
 runner-android-application-compose = { id = "runner.android.application.compose", version = "unspecified" }
 runner-android-library = { id = "runner.android.library", version = "unspecified" }
+runner-android-dynamic-feature = { id = "runner.android.dynamic.feature", version = "unspecified" }
 runner-android-library-compose = { id = "runner.android.library.compose", version = "unspecified" }
 runner-android-feature-ui = { id = "runner.android.feature.ui", version = "unspecified" }
 runner-android-room = { id = "runner.android.room", version = "unspecified" }

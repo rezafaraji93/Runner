@@ -3,6 +3,7 @@ package reza.droid.convention
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.dsl.BuildType
 import com.android.build.api.dsl.CommonExtension
+import com.android.build.api.dsl.DynamicFeatureExtension
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import org.gradle.api.Project
@@ -19,7 +20,7 @@ internal fun Project.configureBuildTypes(
         }
         val apiKey = gradleLocalProperties(rootDir, rootProject.providers).getProperty("API_KEY")
         when(extensionType) {
-            Application -> {
+            APPLICATION -> {
                 extensions.configure<ApplicationExtension> {
                     buildTypes {
                         debug {
@@ -33,8 +34,23 @@ internal fun Project.configureBuildTypes(
                     }
                 }
             }
-            library -> {
+            LIBRARY -> {
                 extensions.configure<LibraryExtension> {
+                    buildTypes {
+                        debug {
+                            configureDebugBuildType(apiKey)
+                        }
+                        release {
+                            configureReleaseBuildType(
+                                commonExtension, apiKey
+                            )
+                        }
+                    }
+                }
+            }
+
+            DYNAMIC_FEATURE -> {
+                extensions.configure<DynamicFeatureExtension> {
                     buildTypes {
                         debug {
                             configureDebugBuildType(apiKey)

@@ -28,7 +28,7 @@ class AndroidApplicationConventionPlugin : Plugin<Project> {
 
                 configureBuildTypes(
                     commonExtension = this,
-                    extensionType = ExtensionType.Application
+                    extensionType = ExtensionType.APPLICATION
                 )
             }
 

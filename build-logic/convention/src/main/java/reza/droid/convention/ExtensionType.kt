@@ -1,5 +1,7 @@
 package reza.droid.convention
 
 enum class ExtensionType {
-    Application, library
+    APPLICATION,
+    LIBRARY,
+    DYNAMIC_FEATURE
 }
