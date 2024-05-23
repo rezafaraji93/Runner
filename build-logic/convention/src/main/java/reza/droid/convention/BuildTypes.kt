@@ -59,6 +59,7 @@ internal fun Project.configureBuildTypes(
                             configureReleaseBuildType(
                                 commonExtension, apiKey
                             )
+                            isMinifyEnabled = false
                         }
                     }
                 }
