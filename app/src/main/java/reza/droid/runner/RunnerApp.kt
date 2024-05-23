@@ -40,7 +40,8 @@ class RunnerApp : Application() {
                 locationModule,
                 databaseModule,
                 networkModule,
-                runDataModule
+                runDataModule,
+
             )
         }
     }
